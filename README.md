@@ -6,7 +6,8 @@ mongodb
 
 ## Execution
 start the mongodb
-start the docker engine
+start the docker 
+configure docker in nodejs
 run the nodejs project
 
 ## Port
