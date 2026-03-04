@@ -1,25 +1,60 @@
-## Installation
-Install Nodejs
-WSL - ubuntu
-docker
-mongodb
+## Initialize Node.js project
 
-## Execution
-start the mongodb
-start the docker 
-configure docker in nodejs
-run the nodejs project
+npm init -y
 
-## Port
-I used this port to execute the NODEJS.
-5000
+## Install dependencies
 
-## docker build command
-This command is used to build the project.
+npm install
 
-docker build -t my-backend .
+## Install Express
 
-##  run command
-This is used to run Nodejs in local 
+npm install express
 
-docker run -p 5000:5000 my-backend
+## Create index.js
+
+This is the main application file where you will set up the server and define your API routes.
+
+## Create Dockerfile
+
+Define the container setup for your app.
+
+## Set up .env file
+
+Include database connection details and other environment-specific configurations.
+
+## Implement CRUD APIs in index.js
+
+GET – Fetch resources
+
+POST – Create new resources
+
+PUT – Update existing resources
+
+DELETE – Remove resources
+
+##  Docker Commands
+--Build Docker Image--
+docker build -t node-app .
+
+--Run Docker Container--
+docker run -p 5000:5000 node-app
+
+## REST Api
+--GET
+http://localhost:5000/employee
+
+--POST
+http://localhost:5000/employee
+
+--GET (one employee)
+http://localhost:5000/employee/69a81d34e16bffb9257e4348
+
+--PUT
+http://localhost:5000/employee/69a81d34e16bffb9257e4348 
+
+--DELETE
+http://localhost:5000/employee/69a81d08e16bffb9257e4346
+
+ 
+
+
