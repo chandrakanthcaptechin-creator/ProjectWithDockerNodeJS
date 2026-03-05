@@ -37,7 +37,7 @@ DELETE – Remove resources
 docker build -t node-app .
 
 --Run Docker Container--
-docker run -p 5000:5000 node-app
+docker run -p 5000:5000 --env-file .env node-app
 
 ## REST Api
 --GET
