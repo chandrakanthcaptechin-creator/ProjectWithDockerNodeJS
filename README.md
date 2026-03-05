@@ -12,11 +12,11 @@ npm install express
 
 ## Create index.js
 
-This is the main application file where you will set up the server and define your API routes.
+This is the main application file where we will set up the server and define our API routes.
 
 ## Create Dockerfile
 
-Define the container setup for your app.
+Define the container setup for the app.
 
 ## Set up .env file
 
