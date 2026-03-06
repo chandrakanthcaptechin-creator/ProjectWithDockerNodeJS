@@ -15,7 +15,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - MONGO_URL=mongodb://mongodb:27017/mydatabase
+      - MONGO_URI=mongodb://host.docker.internal:27017/crud
     depends_on:
       - mongodb
 

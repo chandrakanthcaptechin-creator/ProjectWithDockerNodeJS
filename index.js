@@ -1,82 +1,129 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
+
 const app = express();
 
-app.use(express.json()); 
-
+app.use(express.json());
+app.use(cors());
 
 const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/crud';
 
-mongoose.connect(mongoUri) 
-  .then(() => console.log('connected'))
-  .catch(err => console.error('Failed to connect:', err));
+mongoose.connect(mongoUri)
+.then(() => console.log('MongoDB Connected'))
+.catch(err => console.log(err));
 
+/* Schema */
 const employeeSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  age: { type: Number, required: true },
-  email: { type: String, required: true }
+  empID: String,
+  name: String,
+  DOJ: String,
+  resign: String,
+  DOR: String
 });
 
+/* Model */
 const Employee = mongoose.model('Employee', employeeSchema, 'employee');
+
+
+// CREATE
 app.post('/employee', async (req, res) => {
   try {
-    const { name, age, email } = req.body;
-    const employee = new Employee({ name, age, email });
-    const saved = await employee.save();
-    res.status(201).json(saved);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+
+    const employee = new Employee(req.body);
+
+    const savedEmployee = await employee.save();
+
+    res.status(201).json(savedEmployee);
+
+  } catch (error) {
+
+    res.status(500).json({ error: error.message });
+
   }
 });
 
+
+// READ ALL
 app.get('/employee', async (req, res) => {
-    
   try {
-       const employees = await Employee.find();      
+console.log('enter');
+
+    const employees = await Employee.find();
+
     res.json(employees);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+
+  } catch (error) {
+
+    res.status(500).json({ error: error.message });
+
   }
 });
 
 
+// READ ONE
 app.get('/employee/:id', async (req, res) => {
   try {
-    const { id } = req.params;
-    const employee = await Employee.findById(id);
-      res.json(employee);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+
+    const employee = await Employee.findById(req.params.id);
+
+    if (!employee)
+      return res.status(404).json({ message: "Employee not found" });
+
+    res.json(employee);
+
+  } catch (error) {
+
+    res.status(500).json({ error: error.message });
+
   }
 });
 
+
+// UPDATE
 app.put('/employee/:id', async (req, res) => {
   try {
-    const { id } = req.params;
-    const { name, age, email } = req.body;
-    const updated = await Employee.findByIdAndUpdate(
-      id,
-      { name, age, email },
-      { new: true, runValidators: true }
+
+    const updatedEmployee = await Employee.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
     );
-    if (!updated) return res.status(404).json({ message: 'Employee not found' });
-    res.json(updated);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+
+    if (!updatedEmployee)
+      return res.status(404).json({ message: "Employee not found" });
+
+    res.json(updatedEmployee);
+
+  } catch (error) {
+
+    res.status(500).json({ error: error.message });
+
   }
 });
 
+
+// DELETE
 app.delete('/employee/:id', async (req, res) => {
   try {
-    console.log('entered');    
-    const { id } = req.params;
-    const deleted = await Employee.findByIdAndDelete(id);
-    res.json({ message: 'Employee deleted' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+
+    const deletedEmployee = await Employee.findByIdAndDelete(req.params.id);
+
+    if (!deletedEmployee)
+      return res.status(404).json({ message: "Employee not found" });
+
+    res.json({ message: "Employee deleted successfully" });
+
+  } catch (error) {
+
+    res.status(500).json({ error: error.message });
+
   }
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
